@@ -190,17 +190,70 @@ class Database{
                 [ group_id, server_id, name], 
                 (error, results, fields)=>{
                     if (error) throw error;
-                    console.log(results);
+                    //console.log(results);
                 });
             }else{
                 if(results[0].name != name){ //checks if group name changed
                     this._connection.query('UPDATE groups SET name = ? WHERE id = ?;', [name,group_id], function () {
                         if (error) throw error;
-                        console.log(results);
+                        //console.log(results);
                     });
                 }
             }
         })
+    }
+
+    changePermission(group_id, command, enable){
+        this._connection.query('SELECT id FROM commands WHERE name = ?', [command] , (error, results, fields)=>{
+            if (error) throw error;
+            if(results.length > 0){ // checks if the command is even found
+                if(enable > 1) enable = 1;
+                let command_id = results[0].id;
+                this._connection.query('SELECT * FROM permissions WHERE command_id = ? AND group_id = ?', 
+                [command_id,group_id] , (error, results, fields)=>{
+
+                    if(results.length > 0){ // if the permission exists already
+                        this._connection.query('UPDATE permissions SET enable = ? WHERE command_id = ? AND group_id = ?', 
+                        [enable, command_id, group_id], 
+                        (error, results, fields)=>{
+                            if (error) throw error;
+                            console.log(results);
+                        });
+                    }else{ // create the new permission entry because it doesn not exist
+                        this._connection.query('INSERT INTO permissions (`command_id`, `group_id`, `enable`) VALUES (?,?,?);', 
+                        [command_id, group_id, enable], 
+                        (error, results, fields)=>{
+                            if (error) throw error;
+                            console.log(results);
+                        });
+                    }
+
+
+                })
+
+            }else{
+                throw "no command found"
+            }
+            
+        })
+
+    }
+
+    checkPermission(group_id, name, callback){
+        this._connection.query(`
+            SELECT permissions.command_id AS command_id, permissions.group_id AS group_id, commands.name AS name, permissions.enable AS enable
+            FROM permissions
+            JOIN commands ON permissions.command_id = commands.id
+            WHERE name = ? AND group_id = ?;
+        `,[name, group_id], 
+        (error, results, fields)=>{
+            if(results[0].enable == 1){
+                callback()
+            }else{
+                return
+            }           
+        });
+
     }
 
 }

@@ -3,9 +3,9 @@ const FileLoader = require('./FileLoader')
 bot = new Discord.Client();
 const settings = require('./settings.json')
 const Database = require('./Database')
+const db = new Database();
 
 bot.updateServers = ()=>{
-    let db = new Database();
     //const Guilds = new Discord.Collection();
     Array.from(bot.guilds.cache).forEach( guild =>{
         //gets the id and name from the guilds cache
@@ -16,11 +16,14 @@ bot.updateServers = ()=>{
             db.addGroup(guild[1].id, group[1].id, group[1].name )
         })
     })
+    //db.changePermission("772551509388689488", "hep", 1)
 }
 
 bot.on('ready', () => {
     bot.updateServers();
     console.log(`Logged in as ${bot.user.tag}!`);
+
+    
 });
 
 let fs = new FileLoader();
@@ -51,9 +54,24 @@ bot.on('message', (message)=>{
     
     //exec command
     try{
-        bot.commands.get(command.slice(settings.prefix.length))
-        .onMessage(message, args)
+        if(bot.commands.get(command.slice(settings.prefix.length))){ //checks if its a legal command
+            let run = true;
+            for(let i = 0; i < message.member._roles.length-1; i++){
+                db.checkPermission(message.member._roles[i], command.slice(settings.prefix.length), ()=>{
+                    if(run){
+                        bot.commands.get(command.slice(settings.prefix.length))
+                        .onMessage(message, args);
+                        run = false; // flag to keep it from running more than once
+                    }else{
+                        return;
+                    }
+                })
+            }     
+        }else{
+            return
+        }
     }catch(e){
+        console.error(e);
         return;
     }
     
