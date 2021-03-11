@@ -11,8 +11,11 @@ bot.updateServers = ()=>{
         //gets the id and name from the guilds cache
         //Guilds.set(guild[1].id, guild[1].name)
         db.addServer(guild[1].id, guild[1].name)
+        let roles = Array.from(guild[1].roles.cache)
+        roles.forEach( group =>{
+            db.addGroup(guild[1].id, group[1].id, group[1].name )
+        })
     })
-    db.checkPassword("pon", "password123")
 }
 
 bot.on('ready', () => {

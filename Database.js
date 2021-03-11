@@ -182,6 +182,27 @@ class Database{
         })
     }
 
+    addGroup(server_id, group_id, name){
+        this._connection.query('SELECT id FROM groups WHERE id = ?', [group_id] , (error, results, fields)=>{
+            if (error) throw error;
+            if(results.length < 1){
+                this._connection.query('INSERT INTO groups (`id`, `server_id` , `name`) VALUES (?,?,?);', 
+                [ group_id, server_id, name], 
+                (error, results, fields)=>{
+                    if (error) throw error;
+                    console.log(results);
+                });
+            }else{
+                if(results[0].name != name){ //checks if group name changed
+                    this._connection.query('UPDATE groups SET name = ? WHERE id = ?;', [name,group_id], function () {
+                        if (error) throw error;
+                        console.log(results);
+                    });
+                }
+            }
+        })
+    }
+
 }
 
 module.exports = Database;
