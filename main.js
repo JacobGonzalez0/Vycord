@@ -24,7 +24,6 @@ bot.on('ready', () => {
     bot.updateServers();
     bot.media = new Media();
     console.log(`Logged in as ${bot.user.tag}!`);
-    //db.changePermission("768328453791416331","join", 1)
 });
 
 let fs = new FileLoader();

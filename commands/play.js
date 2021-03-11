@@ -13,18 +13,8 @@ class Play extends Command{
     //Override
     onMessage(message, args){
         //it just heps for some reason
-        
-        
-        if(this.test == 0){
-            this.media = new Media("752731337055535116")
-            this.test ++;
-        }else{
-            this.media.join()
-            this.media.checkConnection();
-        }
-        
-
-        
+        bot.media.playYoutube(message.member.voice.channel.id, 
+            args[0]) 
         
     }
 

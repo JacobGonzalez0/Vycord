@@ -12,34 +12,32 @@ class Media{
         
     }
 
-    addInstance(channel_id, callback){
+    addInstance(channel_id){
         //this is all so the connection object can be stored in our class.
+        
         let promise = new Promise(resolve => {
             db.getServers( (data, promise)=>{
                 for(let i = 0; i < data.length;i++){
                     try{
-                        resolve(_bot.guilds.cache.get( String(data[i].id) ).channels.cache.get(channel_id)).join();
+                        resolve(bot.guilds.cache.get( String(data[i].id) ).channels.cache.get(channel_id).join());
                     }catch(e){
                         return;
                     }
                 }
             })
         });
-
+        //this.assignConnection(data)
         promise.then( data => this.assignConnection(data, channel_id));
         
     }
 
-    join(channel_id){
-        this.instances.get(channel_id).join();
+
+    playYoutube(channel_id, url){
+        this.dispatcher = this.instances.get(channel_id).play(ytdl(url, { filter: 'audioonly' }))
     }
 
-    playYoutube(url){
-        this.dispatcher = connection.play(ytdl(url, { filter: 'audioonly' }))
-    }
-
-    assignConnection(connection, channel_id){
-        this.instances.set(channel_id, connection);
+    assignConnection(connection, channel_id){        
+        this.instances.set(channel_id,connection)
     }
 
     checkConnection(){

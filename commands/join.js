@@ -11,15 +11,12 @@ class Join extends Command{
     //Override
     onMessage(message, args){
         //it just heps for some reason
-        
-        console.log(message.channel.id)
-        bot.media.addInstanceAndJoin(message.channel.id);
-    
+        bot.media.addInstance(message.member.voice.channel.id)
     }
 
     //Override
     help(){
-        let helpText = `It just heps`
+        let helpText = `Makes the bot join your voice channel`
         return helpText
     }
 
