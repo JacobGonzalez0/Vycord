@@ -28,7 +28,8 @@ class Database{
     addCommand(name, help){
         //checks if entry is in the
         this._connection.query('SELECT * FROM commands WHERE name = ?', name, (error, results, fields)=>{
-            if(results.length < 1){
+            if (error) throw error;
+            if(results.length == 0){
                 this._connection.query('INSERT INTO commands (`name`, `help`) VALUES (?,?);', [name,help], function () {
                     if (error) throw error;
                     console.log(results);
@@ -53,14 +54,15 @@ class Database{
     }
 
     //returns array
-    getServers(){
-        this._connection.query('SELECT * FROM servers', (error, results, fields)=>{
-            return results
+    getServers(callback, promise){
+        this._connection.query('SELECT * FROM servers;', (error, results, fields)=>{
+            if (error) throw error;
+            callback(results, promise)
         })
     }
 
     addServer(id, name){
-        this._connection.query('SELECT * FROM servers WHERE id = ?', id, (error, results, fields)=>{
+        this._connection.query('SELECT * FROM servers WHERE id = ?;', id, (error, results, fields)=>{
             if(results.length < 1){
                 this._connection.query('INSERT INTO servers (`id`, `name`) VALUES (?,?);', [id,name], (error, results, fields)=>{
                     if (error) throw error;
@@ -247,6 +249,7 @@ class Database{
             WHERE name = ? AND group_id = ?;
         `,[name, group_id], 
         (error, results, fields)=>{
+            if (error) throw error;
             if(results.length > 0){
                 if(results[0].enable >= 1){
                     callback();

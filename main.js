@@ -4,6 +4,8 @@ bot = new Discord.Client();
 const settings = require('./settings.json')
 const Database = require('./Database')
 const db = new Database();
+const Media = require('./Media')
+
 
 bot.updateServers = ()=>{
     //const Guilds = new Discord.Collection();
@@ -20,9 +22,9 @@ bot.updateServers = ()=>{
 
 bot.on('ready', () => {
     bot.updateServers();
+    bot.media = new Media();
     console.log(`Logged in as ${bot.user.tag}!`);
-
-    
+    //db.changePermission("768328453791416331","join", 1)
 });
 
 let fs = new FileLoader();
