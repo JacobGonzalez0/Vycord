@@ -2,16 +2,14 @@ const Discord = require('discord.js');
 const FileLoader = require('./FileLoader')
 bot = new Discord.Client();
 const settings = require('./settings.json')
+const WebUI = require('./WebUI')
+
+new WebUI();
 
 bot.on('ready', () => {
   console.log(`Logged in as ${bot.user.tag}!`);
 });
 
-// client.on('message', msg => {
-//   if (msg.content === 'ping') {
-//     msg.reply('pong');
-//   }
-// });
 let fs = new FileLoader();
 
 bot.commands = fs.parseCommands( 
@@ -49,6 +47,5 @@ bot.on('message', (message)=>{
 
 
 })
-
 
 bot.login(settings.token);
