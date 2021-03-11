@@ -247,11 +247,11 @@ class Database{
             WHERE name = ? AND group_id = ?;
         `,[name, group_id], 
         (error, results, fields)=>{
-            if(results[0].enable == 1){
-                callback()
-            }else{
-                return
-            }           
+            if(results.length > 0){
+                if(results[0].enable >= 1){
+                    callback();
+                }  
+            }    
         });
 
     }

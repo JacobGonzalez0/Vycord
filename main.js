@@ -16,7 +16,6 @@ bot.updateServers = ()=>{
             db.addGroup(guild[1].id, group[1].id, group[1].name )
         })
     })
-    //db.changePermission("772551509388689488", "hep", 1)
 }
 
 bot.on('ready', () => {
@@ -56,7 +55,7 @@ bot.on('message', (message)=>{
     try{
         if(bot.commands.get(command.slice(settings.prefix.length))){ //checks if its a legal command
             let run = true;
-            for(let i = 0; i < message.member._roles.length-1; i++){
+            for(let i = 0; i < message.member._roles.length; i++){
                 db.checkPermission(message.member._roles[i], command.slice(settings.prefix.length), ()=>{
                     if(run){
                         bot.commands.get(command.slice(settings.prefix.length))
