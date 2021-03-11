@@ -22,8 +22,7 @@ class Database{
             this._connection.query("DBCC CHECKIDENT ('commands', RESEED, 0);", function (error, results, fields){
                 callback();
             })
-        })
-        
+        })     
     }
 
     addCommand(name, help){
@@ -119,6 +118,8 @@ class Database{
         }
 
         //TODO: check discord_id valid
+
+        //inside this callback we lose track of this keyword
         let _connect = this._connection
         bcrypt.hash(password, saltRounds, function(err, hash) {
             _connect.query("SELECT username, email FROM users WHERE username = ? OR email = ?",
@@ -142,10 +143,44 @@ class Database{
         
     }
 
+    checkPassword(username, password){
+        this._connection.query('SELECT username, password FROM users WHERE username = ?', username, (error, results, fields)=>{
+            if(results.length == 1){
+                bcrypt.compare(password, results[0].password, function(err, result) {
+                    console.log(result)
+                });
+            }else if(results.length >= 2){
+                throw "too many users found, database error"
+            }else{
+                throw "no user found"
+            }
+        })
+    }
 
-
-
-
+    changePassword(username, oldPassword, newPassword){
+        let _connect = this._connection;
+        _connect.query('SELECT username, password FROM users WHERE username = ?', username, (error, results, fields)=>{
+            if(results.length == 1){
+                bcrypt.compare(oldPassword, results[0].password, function(err, result) {
+                    if(result){
+                        bcrypt.hash(newPassword, saltRounds, function(err, hash) {
+                            _connect.query('UPDATE users SET password = ? WHERE username = ?;', [hash,username], function () {
+                                if (error) throw error;
+                                console.log(results);
+                            });
+                        });
+                        
+                    }else{
+                        throw "incorrect password"
+                    }
+                });
+            }else if(results.length >= 2){
+                throw "too many users found, database error"
+            }else{
+                throw "no user found"
+            }
+        })
+    }
 
 }
 

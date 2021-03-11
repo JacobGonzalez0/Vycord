@@ -1,5 +1,7 @@
 const Command = require("../Command");
 
+// message object in onMessage() can be found at
+// https://discord.js.org/#/docs/main/stable/class/Message
 class Hep extends Command{
 
     //Override

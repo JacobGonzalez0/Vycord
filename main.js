@@ -12,10 +12,8 @@ bot.updateServers = ()=>{
         //Guilds.set(guild[1].id, guild[1].name)
         db.addServer(guild[1].id, guild[1].name)
     })
-    db.addUser("pon","user@email.com","password123","910231231231");
+    db.checkPassword("pon", "password123")
 }
-
-
 
 bot.on('ready', () => {
     bot.updateServers();
