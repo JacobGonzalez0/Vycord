@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `commands` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `help` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -40,8 +40,8 @@ CREATE TABLE `commands` (
 --
 
 CREATE TABLE `groups` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `server_id` int(10) UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `server_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -52,8 +52,8 @@ CREATE TABLE `groups` (
 --
 
 CREATE TABLE `permissions` (
-  `command_id` int(10) UNSIGNED NOT NULL,
-  `group_id` int(10) UNSIGNED NOT NULL
+  `command_id` bigint(20) UNSIGNED NOT NULL,
+  `group_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -63,7 +63,7 @@ CREATE TABLE `permissions` (
 --
 
 CREATE TABLE `servers` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -74,11 +74,12 @@ CREATE TABLE `servers` (
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(50) NOT NULL,
   `email` varchar(200) NOT NULL,
-  `admin` int(10) UNSIGNED NOT NULL,
-  `discord_id` int(10) UNSIGNED NOT NULL
+  `password` varchar(400) NOT NULL,
+  `admin` bigint(20) UNSIGNED NOT NULL,
+  `discord_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -125,13 +126,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `commands`
 --
 ALTER TABLE `commands`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

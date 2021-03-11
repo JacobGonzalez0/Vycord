@@ -1,9 +1,12 @@
 const Discord = require('discord.js');
+const Database = require('./Database');
+
 
 class FileLoader{
 
     constructor(){
         this._fs = require("fs");
+        this._db = new Database();
     }
 
     //returns array of files
@@ -28,12 +31,15 @@ class FileLoader{
             console.error("Invalid Array")
             return -1
         }
-
         let collection = new Discord.Collection();
         files.forEach( file =>{
-            let command = require("./" + file);
-            collection.set(command.name.toLowerCase(), new command());
+            let _command = require("./" + file);
+            let command = new _command();
+            this._db.addCommand(_command.name.toLowerCase(), command.help())
+            collection.set(_command.name.toLowerCase(), command);
         })
+
+        this._db.getCommands();
 
         return collection;
     }

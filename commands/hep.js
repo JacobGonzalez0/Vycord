@@ -11,9 +11,7 @@ class Hep extends Command{
 
     //Override
     help(){
-        let helpText = `
-            It just heps
-        `
+        let helpText = `It just heps`
         return helpText
     }
 

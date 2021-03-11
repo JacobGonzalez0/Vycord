@@ -2,12 +2,24 @@ const Discord = require('discord.js');
 const FileLoader = require('./FileLoader')
 bot = new Discord.Client();
 const settings = require('./settings.json')
-const WebUI = require('./WebUI')
+const Database = require('./Database')
 
-new WebUI();
+bot.updateServers = ()=>{
+    let db = new Database();
+    //const Guilds = new Discord.Collection();
+    Array.from(bot.guilds.cache).forEach( guild =>{
+        //gets the id and name from the guilds cache
+        //Guilds.set(guild[1].id, guild[1].name)
+        db.addServer(guild[1].id, guild[1].name)
+    })
+    db.addUser("pon","user@email.com","password123","910231231231");
+}
+
+
 
 bot.on('ready', () => {
-  console.log(`Logged in as ${bot.user.tag}!`);
+    bot.updateServers();
+    console.log(`Logged in as ${bot.user.tag}!`);
 });
 
 let fs = new FileLoader();
