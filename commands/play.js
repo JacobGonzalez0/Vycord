@@ -6,21 +6,18 @@ class Play extends Command{
 
     constructor(){
         super();
-        this.test = 0;
-        this.media = null;
     }
 
     //Override
     onMessage(message, args){
         //it just heps for some reason
         bot.media.playYoutube(message.member.voice.channel.id, 
-            args[0]) 
-        
+            args[0])  
     }
 
     //Override
     help(){
-        let helpText = `It just heps`
+        let helpText = `Play a youtube link <url>`
         return helpText
     }
 

@@ -1,7 +1,8 @@
 const Command = require("../Command");
+const Media = require("../Media");
 // message object in onMessage() can be found at
 // https://discord.js.org/#/docs/main/stable/class/Message
-class Join extends Command{
+class Leave extends Command{
 
     constructor(){
         super();
@@ -9,15 +10,16 @@ class Join extends Command{
 
     //Override
     onMessage(message, args){
-        bot.media.addInstance(message.member.voice.channel.id)
+        //it just heps for some reason
+        bot.media.leave(message.member.voice.channel.id)  
     }
 
     //Override
     help(){
-        let helpText = `Makes the bot join your voice channel`
+        let helpText = `The bot will leave the voice channel you are connected to.`
         return helpText
     }
 
 }
- 
-module.exports = Join;
+
+module.exports = Leave;
