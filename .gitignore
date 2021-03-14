@@ -1,2 +1,7 @@
 /node_modules
 settings.json
+.gitignore
+
+#personal commands/tests
+/commands/distracted.js
+/commands/distracted/

@@ -18,8 +18,10 @@ class FileLoader{
             if(this._fs.statSync(name).isDirectory()){
                 this.checkDir(name, _files);
             }else{
-        
-              _files.push(name);
+                if(name.indexOf("js") != -1){
+                    _files.push(name);
+                }
+                
             }
           })
         return _files
