@@ -29,7 +29,11 @@ class Pixibay extends Command{
             });
 
             res.on('end', function () {
-                let currentHit = JSON.parse(data).hits[0]
+                let pick =  Math.floor(Math.random() * JSON.parse(data).hits.length - 1) || args[1]
+                if(JSON.parse(data).hits.length == 0){
+                    message.channel.send("No images found");
+                }
+                let currentHit = JSON.parse(data).hits[pick]
 
                 const embed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
