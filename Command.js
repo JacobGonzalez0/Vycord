@@ -1,12 +1,16 @@
+const Discord = require('discord.js');
+const https = require('https');
+
 class Command{
 
     constructor(){
         if (this.onMessage === undefined) {
-            throw new TypeError("Must override method");
+            throw new Discord.TypeError("Must override method");
         }
         if (this.help === undefined) {
-            throw new TypeError("Must override method");
+            throw new Discord.TypeError("Must override method");
         }
+        this.instances = new Discord.Collection();
     }
 
     onMessage(message, args){
@@ -40,7 +44,9 @@ class Command{
         let line = 1;
         let str = ''
         for(var i = 0; i < string.length-1; i += maxCharsPerLine){ 
-            if(line == 1){ // if we are on the first line
+            if(line == 1 && string.length <= maxCharsPerLine){ // if we are on the first line
+                str += string.substring(maxCharsPerLine*(line-1), (line*maxCharsPerLine)+1 );
+            }else if(line == 1){ // if we are on the first line
                 str += string.substring(maxCharsPerLine*(line-1), (line*maxCharsPerLine)+1 );
                 str += "-"
             }else if(line >= lines){ // if we are on the last line
@@ -55,6 +61,10 @@ class Command{
 
         }
         return str
+    }
+
+    httpsRequest(options, callback){
+        https.request(options, (res) => callback(res)).end()
     }
 
 }
