@@ -3,7 +3,6 @@ const Media = require("../Media");
 const Settings = require("../settings.json");
 const Discord = require("discord.js")
 const https = require('https');
-const e = require("express");
 // message object in onMessage() can be found at
 // https://discord.js.org/#/docs/main/stable/class/Message
 class Pixibay extends Command{
@@ -113,7 +112,6 @@ class Instance{
         }
         let currentHit = data.hits[this.pick]
 
-        console.log(this.sentMessage)
         const embed = new Discord.MessageEmbed()
         .setColor('#0099ff')
         .setTitle('Pixibay search result')
@@ -131,9 +129,13 @@ class Instance{
     addReaction(message){
         //clears all reactions
         message.reactions.removeAll().catch(error => console.error('Failed to clear reactions: ', error)).then( ()=>{
-            message.react('⬅️').then( () =>{ //following lines add the reations THEN starts the listener on reactions
+            if(this.pick == 0){
                 message.react('➡️').then( () => this.awaitReaction(message))
-            })
+            }else{
+                message.react('⬅️').then( () =>{ //following lines add the reations THEN starts the listener on reactions
+                    message.react('➡️').then( () => this.awaitReaction(message))
+                })
+            }
         });
         
         
