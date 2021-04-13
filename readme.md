@@ -1,4 +1,4 @@
-## Vycord
+# Vycord
 
 Vycord is a discord bot with a managed user permissions system so that commands can be written easier in single javascript classes. The goal is to make plugin creation for commands for discord easier to write and less worry about managing who can use the commands
 
@@ -15,3 +15,29 @@ This allows for complex interactions with less code! Check out the [Pixibay API 
 The pixibay command can manage mulitple instances of itself on a chat so users can search though multiple queries without having to make commands to activate an older instance.
 
 These user features are more friendly and useful when you have chats that are very active and you don't want to clog up the feed!
+
+
+## Deployment
+
+To deploy this app you need a MySQL database setup to connect to. Use the command below in the root folder of the app and install the packages required
+
+    npm install
+ Afterwards create a file named `settings.json` and insert the Discord bot token you can create using the [Discord developer panel](https://discord.com/developers/applications).  To use the example Pixibay API you can get a key for it by signing up for [Pixibay here](https://pixabay.com/api/docs/)
+
+    {
+	    "token"  :  "<Discord bot token>",
+	    "prefix" :  "!",
+	    "Pixibay":  "<API key here>",
+	    "mysql"  :  {
+			    "user"  :  "username",
+			    "password"  :  "password",
+			    "host"  :  "host_ip",
+			    "database"  :  "database_name"
+	    },
+    }
+You can run the SQL file found in `db/vycord.sql` to have the correct tables.
+The database is structured like so: 
+![enter image description here](https://raw.githubusercontent.com/JacobGonzalez0/Vycord/main/db/design.png)
+Once all connected run in the root folder
+
+    node main.js
