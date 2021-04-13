@@ -21,6 +21,12 @@ bot.updateServers = ()=>{
 }
 
 bot.on('ready', () => {
+    // db.changePermission("groupid","hep",1)
+    // db.changePermission("groupid","join",1)
+    // db.changePermission("groupid","play",1)
+    // db.changePermission("groupid","pause",1)
+    // db.changePermission("groupid","leave",1)
+    // db.changePermission("groupid","pixibay",1);
     bot.updateServers();
     bot.media = new Media();
     console.log(`Logged in as ${bot.user.tag}!`);
@@ -33,7 +39,6 @@ bot.commands = fs.parseCommands(
 )
 
 bot.on('message', (message)=>{
-
     //doesnt listen to other bots
     if(message.author.bot) return;
 
